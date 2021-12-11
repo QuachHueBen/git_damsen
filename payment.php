@@ -21,11 +21,23 @@
         $email = $_POST['email'];
         $sql_book = mysqli_query($conn, "INSERT INTO WP_TICKETS (TK_LOAIVE,TK_SLVE,TK_FULLNAME,TK_DATE,TK_PHONE,TK_EMAIL) VALUES('$ticket','$quantity','$name','$date','$phone','$email')");
         $last_id = mysqli_insert_id($conn);
+
     }
-    $sql_book = mysqli_query($conn,"SELECT * FROM WP_TICKETS GROUP BY TK_ID DESC LIMIT 1")
+    $sql_book = mysqli_query($conn,"SELECT * FROM WP_TICKETS GROUP BY TK_ID DESC LIMIT 1");
 
 ?> 
-
+<?php
+    include('C:/xampp/htdocs/laravel_mix/wp-content/themes/mix/phpqrcode/qrlib.php');
+    $name = $_POST['fullname'];
+    $date = $_POST['date_ticket'];
+    $path = "C:/xampp/htdocs/laravel_mix/wp-content/themes/mix/images/";
+    $file = $path.uniqid().".png";
+    $ecc = "L";
+    $pixel_Size = 5;
+    $frame_Size = 5;
+    $sql_qrcode = mysqli_query($conn,"INSERT INTO WP_QRCODE(QR_NAME,QR_DATE,QR_IMG) VALUES('$name','$date','$file')");
+    QRcode::png($name,$file,$ecc,$pixel_Size,$frame_Size);
+?>
 <?php get_header();?>
     <label class="absolute left-[708px] top-[144px] w-[591px] font-black text-8xl text-white font-mtr">Thanh toán</label>
     <img src="/TTAP-TN/wp-content/uploads/2021/11/Group-1-2.png" alt="" class="absolute z-10 left-[330px] top-[264.81px]">
